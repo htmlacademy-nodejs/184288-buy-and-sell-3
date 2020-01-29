@@ -1,6 +1,7 @@
 'use strict';
 
-const fs = require(`fs`);
+const fs = require(`fs`).promises;
+const chalk = require(`chalk`);
 const random = require(`lodash/random`);
 const take = require(`lodash/take`);
 
@@ -117,32 +118,32 @@ const getAdverts = (count) => (
 
 module.exports = {
   name: `--generate`,
-  run: (args) => {
+  run: async (args) => {
     const [count] = args;
     let countPublications = Number.parseInt(count, 10) || DEFAULT_COUNT;
 
     if (countPublications <= 0) {
-      console.error(`Параметр <count> не может быть отрицательным`);
+      console.error(chalk.red(`Параметр <count> не может быть отрицательным`));
       return process.exit(EXIT_CODE.ERROR);
     }
 
     if (countPublications > MAX_COUNT) {
-      console.error(`Не больше ${MAX_COUNT} публикаций`);
+      console.error(chalk.red(`Не больше ${MAX_COUNT} публикаций`));
       return process.exit(EXIT_CODE.ERROR);
     }
 
     const publications = getAdverts(countPublications);
+    const preparedPublications = JSON.stringify(publications, null, `  `);
 
-    fs.writeFile(FILE_NAME, JSON.stringify(publications, null, `  `), (err) => {
-      if (err) {
-        console.error(`Can't write data to file...`);
-        return process.exit(EXIT_CODE.ERROR);
-      }
+    try {
+      await fs.writeFile(FILE_NAME, preparedPublications);
+      console.log(chalk.green(`Operation success. File created.`));
 
-      console.log(`Operation success. File created.`);
       return process.exit(EXIT_CODE.SUCCESS);
-    });
+    } catch (error) {
+      console.error(`Can't write data to file...`);
 
-    return publications;
+      return process.exit(EXIT_CODE.ERROR);
+    }
   },
 };
