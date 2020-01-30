@@ -9,6 +9,10 @@ const {
   EXIT_CODE,
 } = require(`../../constants`);
 
+const FILE_SENTENCES_PATH = `./data/sentences.txt`;
+const FILE_TITLES_PATH = `./data/titles.txt`;
+const FILE_CATEGORIES_PATH = `./data/categories.txt`;
+
 const DEFAULT_COUNT = 1;
 const MAX_COUNT = 1000;
 const FILE_NAME = `mocks.json`;
@@ -21,45 +25,6 @@ const MAX_PICTURE_NUMBER = 16;
 const TYPES = [
   `offer`,
   `sale`,
-];
-
-const TITLES = [
-  `Продам книги Стивена Кинга.`,
-  `Продам новую приставку Sony Playstation 5.`,
-  `Продам отличную подборку фильмов на VHS.`,
-  `Куплю антиквариат.`,
-  `Куплю породистого кота.`,
-  `Продам коллекцию журналов «Огонёк».`,
-  `Отдам в хорошие руки подшивку «Мурзилка».`,
-  `Продам советскую посуду. Почти не разбита.`,
-  `Куплю детские санки.`,
-];
-
-const SENTENCES = [
-  `Товар в отличном состоянии.`,
-  `Пользовались бережно и только по большим праздникам.,`,
-  `Продаю с болью в сердце...`,
-  `Бонусом отдам все аксессуары.`,
-  `Даю недельную гарантию.`,
-  `Если товар не понравится — верну всё до последней копейки.`,
-  `Это настоящая находка для коллекционера!`,
-  `Если найдёте дешевле — сброшу цену.`,
-  `Таких предложений больше нет!`,
-  `Две страницы заляпаны свежим кофе.`,
-  `При покупке с меня бесплатная доставка в черте города.`,
-  `Кажется, что это хрупкая вещь.`,
-  `Мой дед не мог её сломать.`,
-  `Кому нужен этот новый телефон, если тут такое...`,
-  `Не пытайтесь торговаться. Цену вещам я знаю.`,
-];
-
-const CATEGORIES = [
-  `Книги`,
-  `Разное`,
-  `Посуда`,
-  `Игры`,
-  `Животные`,
-  `Журналы`,
 ];
 
 const getRandomElement = (array) => array[random(array.length - 1)];
@@ -96,14 +61,14 @@ const getPicture = () => {
     : `item${number}.jpg`;
 };
 
-const getAdverts = (count) => (
+const getAdverts = (count, titles, sentences, categories) => (
   [...Array(count)].map(() => {
-    const title = getRandomElement(TITLES);
+    const title = getRandomElement(titles);
     const picture = getPicture();
-    const description = getDescription(SENTENCES);
+    const description = getDescription(sentences);
     const type = getRandomElement(TYPES);
     const sum = random(MIN_SUM, MAX_SUM);
-    const сategory = getCategories(CATEGORIES);
+    const сategory = getCategories(categories);
 
     return {
       title,
@@ -115,6 +80,16 @@ const getAdverts = (count) => (
     };
   })
 );
+
+const readContent = async (filePath) => {
+  try {
+    const content = await fs.readFile(filePath, `utf8`);
+    return content.split(`\n`);
+  } catch (err) {
+    console.error(chalk.red(err));
+    return [];
+  }
+};
 
 module.exports = {
   name: `--generate`,
@@ -132,7 +107,11 @@ module.exports = {
       return process.exit(EXIT_CODE.ERROR);
     }
 
-    const publications = getAdverts(countPublications);
+    const titles = await readContent(FILE_TITLES_PATH);
+    const sentences = await readContent(FILE_SENTENCES_PATH);
+    const categories = await readContent(FILE_CATEGORIES_PATH);
+
+    const publications = getAdverts(countPublications, titles, sentences, categories);
     const preparedPublications = JSON.stringify(publications, null, `  `);
 
     try {
