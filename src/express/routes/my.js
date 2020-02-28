@@ -4,7 +4,16 @@ const {Router} = require(`express`);
 
 const myRoute = new Router();
 
-myRoute.get(`/`, (req, res) => res.send(`/my`));
-myRoute.get(`/comments`, (req, res) => res.send(`/my/comments`));
+const pageContent = {
+  title: `Куплю продам`,
+};
+
+myRoute.get(`/`, (req, res) => {
+  return res.render(`my-tickets`, pageContent);
+});
+
+myRoute.get(`/comments`, (req, res) => {
+  return res.render(`comments`, pageContent);
+});
 
 module.exports = myRoute;
