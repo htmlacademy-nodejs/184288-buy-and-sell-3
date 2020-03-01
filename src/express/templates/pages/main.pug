@@ -1,8 +1,6 @@
-extends layout.pug
-
+extends ../common/layout.pug
 block content
-  include ./common/categories.pug
-
+  include ../common/categories.pug
   section.tickets-list
     h2.visually-hidden Самые новые предложения
     .tickets-list__wrapper
@@ -11,8 +9,7 @@ block content
       ul
         - var tickets = newTickets
         each ticket, index in tickets
-          include ./common/ticket.pug
-
+          include ../common/ticket.pug
   section.tickets-list
     h2.visually-hidden Самые обсуждаемые предложения
     .tickets-list__wrapper
@@ -21,7 +18,4 @@ block content
       ul
         - var tickets = popularTickers
         each ticket, index in tickets
-          include ./common/ticket.pug
-
-
-
+          include ../common/ticket.pug

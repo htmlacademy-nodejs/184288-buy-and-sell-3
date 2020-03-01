@@ -1,17 +1,17 @@
 doctype html
-html.html-server(lang='ru')
+html.html-not-found(lang='ru')
   head
     meta(charset='UTF-8')
     meta(name='description', content='Доска объявлений — современный веб-сайт, упрощающий продажу или покупку абсолютно любых вещей.')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(http-equiv='X-UA-Compatible', content='ie=edge')
     title Куплю Продам
-    link(rel='stylesheet', href='css/style.min.css')
-  body.body-server
+    link(href='/css/style.min.css', rel='stylesheet')
+  body.body-not-found
     main
       section.error
-        h1.error__title 500
-        h2.error__subtitle Ошибка cервера
+        h1.error__title 404
+        h2.error__subtitle Страница не найдена
         ul.error__list
           li.error__item
             a(href='sign-up.html') Вход и регистрация
