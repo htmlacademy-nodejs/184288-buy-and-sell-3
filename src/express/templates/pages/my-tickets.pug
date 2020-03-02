@@ -1,0 +1,11 @@
+extends ../common/layout.pug
+block content
+  section.tickets-list
+    h2.visually-hidden Самые новые предложения
+    .tickets-list__wrapper
+      .tickets-list__header
+        a.tickets-list__btn.btn.btn--big(href='#')
+          span Новая публикация
+      ul
+        each ticket, index in tickets
+          include ../common/myTicket.pug

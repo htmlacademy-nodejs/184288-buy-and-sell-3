@@ -1,0 +1,21 @@
+extends ../common/layout.pug
+block content
+  include ../common/categories.pug
+  section.tickets-list
+    h2.visually-hidden Самые новые предложения
+    .tickets-list__wrapper
+      .tickets-list__header
+        p.tickets-list__title Самое свежее
+      ul
+        - var tickets = newTickets
+        each ticket, index in tickets
+          include ../common/ticket.pug
+  section.tickets-list
+    h2.visually-hidden Самые обсуждаемые предложения
+    .tickets-list__wrapper
+      .tickets-list__header
+        p.tickets-list__title Самые обсуждаемые
+      ul
+        - var tickets = popularTickers
+        each ticket, index in tickets
+          include ../common/ticket.pug

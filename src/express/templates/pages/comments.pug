@@ -1,0 +1,25 @@
+extends ../common/layout.pug
+block content
+  section.comments
+  .comments__wrapper
+    h1.visually-hidden Страница комментариев
+    .comments__block
+      .comments__header
+        a.announce-card(href='#')
+          h2.announce-card__title Ленд Ровер
+          span.announce-card__info
+            span.announce-card__price ₽ 900 000
+            span.announce-card__type ПРОДАМ
+      ul.comments-list
+        each comment in comments
+          include ../common/comment.pug
+    .comments__block
+      .comments__header
+        a.announce-card(href='#')
+          h2.announce-card__title Ableton
+          span.announce-card__info
+            span.announce-card__price ₽ 900 000
+            span.announce-card__type ПРОДАМ
+      ul.comments-list
+        each comment in comments
+          include ../common/comment.pug

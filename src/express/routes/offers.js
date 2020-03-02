@@ -2,12 +2,35 @@
 
 const {Router} = require(`express`);
 
+const {categories, tickets, comments} = require(`../data/mock`);
+
 const offersRoute = new Router();
 
-offersRoute.get(`/`, (req, res) => res.send(`/offers`));
-offersRoute.get(`/:id`, (req, res) => res.send(`/offers/${req.params.id}`));
-offersRoute.get(`/add`, (req, res) => res.send(`/offers/add`));
-offersRoute.get(`/edit/:id`, (req, res) => res.send(`/offers/edit/${req.params.id}`));
-offersRoute.get(`/category/:id`, (req, res) => res.send(`/offers/category/${req.params.id}`));
+const pageContent = {
+  title: `Главная страница`,
+  categories,
+  tickets,
+  comments,
+};
+
+offersRoute.get(`/`, (req, res) => {
+  return res.render(`pages/category`, pageContent);
+});
+
+offersRoute.get(`/add`, (req, res) => {
+  return res.render(`pages/new-ticket`, pageContent);
+});
+
+offersRoute.get(`/:id`, (req, res) => {
+  return res.render(`pages/comments`, pageContent);
+});
+
+offersRoute.get(`/edit/:id`, (req, res) => {
+  return res.render(`pages/ticket-edit`, pageContent);
+});
+
+offersRoute.get(`/category/:id`, (req, res) => {
+  return res.render(`pages/ticket`, pageContent);
+});
 
 module.exports = offersRoute;
