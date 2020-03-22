@@ -4,6 +4,7 @@ const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const random = require(`lodash/random`);
 const take = require(`lodash/take`);
+const nanoid = require(`nanoid`);
 
 const {
   EXIT_CODE,
@@ -12,6 +13,7 @@ const {
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
+const FILE_COMMENTS_PATH = `./data/comments.txt`;
 
 const DEFAULT_COUNT = 1;
 const MAX_COUNT = 1000;
@@ -53,6 +55,14 @@ const getCategories = (categories) => {
   return preparedCategories;
 };
 
+const getComments = (comments) => {
+  const randomLength = random(1, comments.length - 1);
+  const shuffledComments = shuffleArray(comments);
+  const preparedComments = take(shuffledComments, randomLength).map((comment) => ({id: nanoid(6), text: comment}));
+
+  return preparedComments;
+};
+
 const getPicture = () => {
   const number = random(MIN_PICTURE_NUMBER, MAX_PICTURE_NUMBER);
 
@@ -61,22 +71,26 @@ const getPicture = () => {
     : `item${number}.jpg`;
 };
 
-const getAdverts = (count, titles, sentences, categories) => (
+const getAdverts = (count, titles, sentences, categories, comments) => (
   [...Array(count)].map(() => {
+    const id = nanoid(6);
     const title = getRandomElement(titles);
     const picture = getPicture();
     const description = getDescription(sentences);
     const type = getRandomElement(TYPES);
     const sum = random(MIN_SUM, MAX_SUM);
     const сategory = getCategories(categories);
+    const preparedComments = getComments(comments);
 
     return {
+      id,
       title,
       picture,
       description,
       type,
       sum,
       сategory,
+      comments: preparedComments,
     };
   })
 );
@@ -110,8 +124,9 @@ module.exports = {
     const titles = await readContent(FILE_TITLES_PATH);
     const sentences = await readContent(FILE_SENTENCES_PATH);
     const categories = await readContent(FILE_CATEGORIES_PATH);
+    const comments = await readContent(FILE_COMMENTS_PATH);
 
-    const publications = getAdverts(countPublications, titles, sentences, categories);
+    const publications = getAdverts(countPublications, titles, sentences, categories, comments);
     const preparedPublications = JSON.stringify(publications, null, `  `);
 
     try {
