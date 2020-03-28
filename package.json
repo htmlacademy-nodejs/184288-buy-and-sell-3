@@ -5,6 +5,7 @@
   "main": "./src/service/service.js",
   "scripts": {
     "test": "npm run eslint",
+    "jest": "jest --watch",
     "eslint": "eslint --ext .js src/",
     "start": "node ./src/service/service.js --generate 5",
     "server": "nodemon ./src/service/service.js --server 3000",
@@ -23,7 +24,9 @@
   "devDependencies": {
     "eslint": "6.8.0",
     "eslint-config-htmlacademy": "0.5.2",
-    "nodemon": "2.0.2"
+    "jest": "25.2.3",
+    "nodemon": "2.0.2",
+    "supertest": "4.0.2"
   },
   "dependencies": {
     "body-parser": "1.19.0",

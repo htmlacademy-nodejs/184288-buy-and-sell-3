@@ -5,4 +5,7 @@ env:
   es6: true
   node: true
 
+overrides:
+  excludedFiles: '*.test.js'
+
 extends: 'htmlacademy/node'

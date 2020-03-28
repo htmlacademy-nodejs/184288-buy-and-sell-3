@@ -9,6 +9,7 @@ Thumbs.db
 
 # Вспомогательные файлы
 *.log*
+coverage
 node_modules/
 mocks.json
 
