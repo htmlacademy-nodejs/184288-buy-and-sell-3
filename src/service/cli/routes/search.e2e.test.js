@@ -4,10 +4,8 @@ const request = require(`supertest`);
 const server = require(`./server`);
 
 describe(`Search API end-points`, () => {
-  test(`Test`, async () => {
-    await request(server)
-      .get(`/search`)
-      .expect('Content-Type', `application/json; charset=utf-8`)
-      .expect(200);
+  test(`When get offers status code should be 200`, async () => {
+    const res = await request(server).get(`/search`);
+    expect(res.statusCode).toBe(200);
   });
 });
