@@ -79,6 +79,10 @@ offersRoute.get(`/:offerId`, async (req, res) => {
   const id = req.params.offerId;
   const offer = find(offers, [`id`, id]);
 
+  if (!offer) {
+    return res.status(HTTP_CODE.NOT_FOUND).send(`Offer not found`);
+  }
+
   return res.send(offer);
 });
 
@@ -106,7 +110,7 @@ offersRoute.get(`/:offerId/comments`, async (req, res) => {
   const offers = await readMocks();
   const id = req.params.offerId;
   const offer = find(offers, [`id`, id]);
-  const comments = get(offer, `comments`);
+  const comments = get(offer, `comments`, []);
 
   return res.send(comments);
 });
@@ -120,7 +124,7 @@ offersRoute.delete(`/:offerId/comments/:commentId`, async (req, res) => {
   const comment = find((offer.comments, [`id`, commentId]));
   const offerIndex = findIndex(offers, [`id`, offerId]);
 
-  if (!offer && !comment) {
+  if (!offer || !comment) {
     return res.status(HTTP_CODE.NOT_FOUND).send(`Offer not found`);
   }
 

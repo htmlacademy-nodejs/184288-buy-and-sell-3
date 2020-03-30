@@ -7,7 +7,7 @@ const FILE_NAME = `mocks.json`;
 const mockData = [
   {
     "id": "1",
-    "title": "Куплю антиквариат.",
+    "title": "Куплю 1 вещь",
     "picture": "item00.jpg",
     "description": [
       "Кажется, что это хрупкая вещь.",
@@ -86,6 +86,28 @@ const mockData = [
       }
     ]
   },
+  {
+    "id": "5",
+    "title": "Test comments by ID",
+    "picture": "item07.jpg",
+    "description": [
+      "Кажется, что это хрупкая вещь.",
+      "Если товар не понравится — верну всё до последней копейки.",
+      "Даю недельную гарантию."
+    ],
+    "type": "offer",
+    "sum": 70629,
+    "сategory": [
+      "Книги",
+      "Игры"
+    ],
+    "comments": [
+      {
+        "id": "pK-Mbj",
+        "text": "С чем связана продажа? Почему так дешёво?"
+      }
+    ]
+  },
 ];
 
 const initializeOffersDatabase = async () => {
@@ -104,7 +126,7 @@ const clearOffersDatabase = async () => {
   try {
     const fileContent = await fs.readFile(FILE_NAME);
     const preparedFileContent = JSON.parse(fileContent);
-    const data = preparedFileContent.filter(item => ![`1`, `2`, `3`].includes(item.id));
+    const data = preparedFileContent.filter(item => ![`1`, `2`, `3`, `4`, `5`].includes(item.id));
 
     await fs.writeFile(FILE_NAME, JSON.stringify(data, null, `  `));
   } catch (error) {
@@ -115,4 +137,5 @@ const clearOffersDatabase = async () => {
 module.exports = {
   initializeOffersDatabase,
   clearOffersDatabase,
+  mockData,
 };
