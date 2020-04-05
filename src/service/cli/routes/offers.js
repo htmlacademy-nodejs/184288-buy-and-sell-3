@@ -9,6 +9,9 @@ const findIndex = require(`lodash/findIndex`);
 
 const {HTTP_CODE} = require(`../../../constants`);
 
+const {getLogger} = require(`../logger`);
+const logger = getLogger();
+
 const offersRoute = new Router();
 
 const FILE_NAME = `mocks.json`;
@@ -21,14 +24,15 @@ const readMocks = async () => {
     const mocks = JSON.parse(fileContent);
 
     return mocks;
-  } catch (err) {
+  } catch (error) {
+    logger.error(error);
     return [];
   }
 };
 
 offersRoute.get(`/`, async (req, res) => {
   const offers = await readMocks();
-
+  logger.info(`End request with status code ${res.statusCode}`);
   return res.send(offers);
 });
 
@@ -44,12 +48,14 @@ offersRoute.post(`/`, async (req, res) => {
 
     try {
       await fs.writeFile(FILE_NAME, preparedOffers);
+      logger.info(`End request with status code ${res.statusCode}`);
       return res.send(offer);
     } catch (error) {
+      logger.error(error);
       return res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(`Something went wrong`);
     }
   }
-
+  logger.error(`End request with status code ${HTTP_CODE.NOT_FOUND}`);
   return res.status(HTTP_CODE.NOT_FOUND).send(`Something went wrong`);
 });
 
@@ -61,6 +67,7 @@ offersRoute.put(`/:offerId`, async (req, res) => {
   const offerIndex = findIndex(offers, [`id`, id]);
 
   if (!offer) {
+    logger.error(`End request with status code ${HTTP_CODE.NOT_FOUND}`);
     return res.status(HTTP_CODE.NOT_FOUND).send(`Offer not found`);
   }
 
@@ -68,8 +75,10 @@ offersRoute.put(`/:offerId`, async (req, res) => {
     offers[offerIndex] = offerData;
     const preparedOffers = JSON.stringify(offers, null, `  `);
     await fs.writeFile(FILE_NAME, preparedOffers);
+    logger.info(`End request with status code ${res.statusCode}`);
     return res.send(offer);
   } catch (error) {
+    logger.error(`End request with status code ${HTTP_CODE.INTERNAL_SERVER_ERROR}`);
     return res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(`Something went wrong`);
   }
 });
@@ -80,9 +89,10 @@ offersRoute.get(`/:offerId`, async (req, res) => {
   const offer = find(offers, [`id`, id]);
 
   if (!offer) {
+    logger.error(`End request with status code ${HTTP_CODE.NOT_FOUND}`);
     return res.status(HTTP_CODE.NOT_FOUND).send(`Offer not found`);
   }
-
+  logger.info(`End request with status code ${res.statusCode}`);
   return res.send(offer);
 });
 
@@ -94,15 +104,17 @@ offersRoute.delete(`/:offerId`, async (req, res) => {
   const preparedOffers = JSON.stringify(filteredOffers, null, `  `);
 
   if (!offer) {
+    logger.error(`End request with status code ${HTTP_CODE.NOT_FOUND}`);
     return res.status(HTTP_CODE.NOT_FOUND).send(`Offer not found`);
   }
 
   try {
     await fs.writeFile(FILE_NAME, preparedOffers);
   } catch (error) {
+    logger.error(`End request with status code ${HTTP_CODE.INTERNAL_SERVER_ERROR}`);
     return res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(`Something went wrong`);
   }
-
+  logger.info(`End request with status code ${res.statusCode}`);
   return res.send(offer);
 });
 
@@ -112,6 +124,7 @@ offersRoute.get(`/:offerId/comments`, async (req, res) => {
   const offer = find(offers, [`id`, id]);
   const comments = get(offer, `comments`, []);
 
+  logger.info(`End request with status code ${res.statusCode}`);
   return res.send(comments);
 });
 
@@ -125,6 +138,7 @@ offersRoute.delete(`/:offerId/comments/:commentId`, async (req, res) => {
   const offerIndex = findIndex(offers, [`id`, offerId]);
 
   if (!offer || !comment) {
+    logger.error(`End request with status code ${HTTP_CODE.NOT_FOUND}`);
     return res.status(HTTP_CODE.NOT_FOUND).send(`Offer not found`);
   }
 
@@ -134,9 +148,11 @@ offersRoute.delete(`/:offerId/comments/:commentId`, async (req, res) => {
     const preparedOffers = JSON.stringify(offers, null, `  `);
     await fs.writeFile(FILE_NAME, preparedOffers);
   } catch (error) {
+    logger.error(`End request with status code ${HTTP_CODE.INTERNAL_SERVER_ERROR}`);
     return res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(`Something went wrong`);
   }
 
+  logger.info(`End request with status code ${res.statusCode}`);
   return res.send(commentId);
 });
 
@@ -147,6 +163,7 @@ offersRoute.post(`/:offerId/comments`, async (req, res) => {
   const offer = find(offers, [`id`, id]);
 
   if (!offer) {
+    logger.error(`End request with status code ${HTTP_CODE.NOT_FOUND}`);
     return res.status(HTTP_CODE.NOT_FOUND).send(offers);
   }
 
@@ -161,10 +178,11 @@ offersRoute.post(`/:offerId/comments`, async (req, res) => {
     const preparedOffers = JSON.stringify(offers, null, `  `);
     await fs.writeFile(FILE_NAME, preparedOffers);
   } catch (error) {
-    console.log(error);
+    logger.error(`End request with status code ${HTTP_CODE.INTERNAL_SERVER_ERROR}`);
     return res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(`Something went wrong`);
   }
 
+  logger.info(`End request with status code ${res.statusCode}`);
   return res.send(comment);
 });
 

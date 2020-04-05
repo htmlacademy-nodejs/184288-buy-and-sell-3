@@ -7,7 +7,7 @@ const FILE_NAME = `mocks.json`;
 const mockData = [
   {
     "id": "1",
-    "title": "Куплю 1 вещь",
+    "title": "TEST",
     "picture": "item00.jpg",
     "description": [
       "Кажется, что это хрупкая вещь.",

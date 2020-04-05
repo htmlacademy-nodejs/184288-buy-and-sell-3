@@ -12,7 +12,8 @@ const readMocks = async () => {
     const fileContent = await fs.readFile(FILE_NAME);
     const mocks = JSON.parse(fileContent);
     return mocks;
-  } catch (err) {
+  } catch (error) {
+    logger.error(error);
     return [];
   }
 };
@@ -22,6 +23,7 @@ searchRoute.get(`/`, async (req, res) => {
   const {query} = req.query;
 
   const response = offers.filter((offer) => offer.title.indexOf(query) !== -1);
+  logger.info(`End request with status code ${res.statusCode}`);
   return res.send(response);
 });
 
