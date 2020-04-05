@@ -11,7 +11,7 @@
     "start::debug": "LOG_LEVEL=debug node ./src/service/cli/server.js | ./node_modules/.bin/pino-pretty",
     "server": "nodemon ./src/service/service.js --server 3000",
     "express": "nodemon ./src/express",
-    "serve": "node ./src/service/cli/routes/server.js > app.log 2> error.log"
+    "serve": "node ./src/service/cli/routes/server.js > ./src/service/logs/app.log"
   },
   "repository": {
     "type": "git",
