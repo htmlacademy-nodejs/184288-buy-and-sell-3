@@ -8,4 +8,7 @@ env:
 overrides:
   excludedFiles: '*.test.js'
 
+ignorePatterns:
+  '**/express/public/**/*.js'
+
 extends: 'htmlacademy/node'

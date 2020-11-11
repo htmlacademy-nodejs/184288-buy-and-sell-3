@@ -27,11 +27,24 @@ server.use(`/search`, searchRoute);
 server.use((req, res) => res.status(404).send({ok: false}));
 
 server.use((req, res, next) => {
-  logger.debug(`Start request to url ${req.url}`);
+  logger.debug(`Request on route ${req.url}`);
+  res.on(`finish`, () => {
+    logger.info(`Response status code ${res.statusCode}`);
+  });
   next();
 });
 
-server.use((err, req, res, _) => {
+server.use((req, res) => {
+  res.status(404)
+    .send(`Not found`);
+  logger.error(`Route not found: ${req.url}`);
+});
+
+app.use((err, _req, _res, _next) => {
+  logger.error(`An error occured on processing request: ${err.message}`);
+});
+
+server.use((_err, _req, res, _) => {
   res
     .status(500)
     .send(`Ошибка при создании сервера`);

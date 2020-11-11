@@ -7,6 +7,8 @@
     "test": "npm run eslint",
     "test::rest": "jest",
     "eslint": "eslint --ext .js src/",
+    "start-t": "cross-env NODE_ENV=production node ./src/service/service.js",
+    "start-t::debug": "cross-env NODE_ENV=development node ./src/service/service.js",
     "start": "LOG_LEVEL=error node ./src/service/cli/server.js | ./node_modules/.bin/pino-pretty",
     "start::debug": "LOG_LEVEL=debug node ./src/service/cli/server.js | ./node_modules/.bin/pino-pretty",
     "server": "nodemon ./src/service/service.js --server 3000",
@@ -35,6 +37,7 @@
   "dependencies": {
     "body-parser": "1.19.0",
     "chalk": "3.0.0",
+    "cross-env": "7.0.2",
     "express": "4.17.1",
     "express-pino-logger": "4.0.0",
     "nanoid": "2.1.11",
