@@ -117,6 +117,7 @@ describe(`Offers API end-points`, () => {
     const res = await request(server).get(`/offers/1`);
     expect(res.statusCode).toBe(200);
     offerKeys.forEach(key => expect(res.body).toHaveProperty(key));
+    expect(res.body).toEqual(mockData[0]);
   });
 
   test(`When POST offer request was Success. Offers amount stould be +1`, async () => {
