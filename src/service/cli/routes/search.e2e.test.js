@@ -4,7 +4,6 @@ const request = require(`supertest`);
 const serverApi = require(`../server`);
 
 let server;
-// let getMockData
 
 const {initializeOffersDatabase} = require(`../../utils/prepareDataForTests`);
 
