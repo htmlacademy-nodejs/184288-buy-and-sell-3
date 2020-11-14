@@ -1,7 +1,9 @@
 'use strict';
 
 const request = require(`supertest`);
-const server = require(`./server`);
+const serverApi = require(`../server`);
+
+let server;
 
 const categoires = [
   `Книги`,
@@ -11,6 +13,10 @@ const categoires = [
   `Животные`,
   `Журналы`
 ];
+
+beforeAll(async () => {
+  server = await serverApi.createServer();
+});
 
 describe(`Categories API end-points`, () => {
   test(`When get categories status code should be 200`, async () => {

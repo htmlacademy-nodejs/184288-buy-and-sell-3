@@ -114,9 +114,8 @@ const initializeOffersDatabase = async () => {
   try {
     const fileContent = await fs.readFile(FILE_NAME);
     const preparedFileContent = JSON.parse(fileContent);
-    const data = [...preparedFileContent, ...mockData];
 
-    await fs.writeFile(FILE_NAME, JSON.stringify(data, null, `  `));
+    await fs.writeFile(FILE_NAME, JSON.stringify(mockData, null, `  `));
   } catch (error) {
     console.error(error);
   }
@@ -124,11 +123,7 @@ const initializeOffersDatabase = async () => {
 
 const clearOffersDatabase = async () => {
   try {
-    const fileContent = await fs.readFile(FILE_NAME);
-    const preparedFileContent = JSON.parse(fileContent);
-    const data = preparedFileContent.filter(item => ![`1`, `2`, `3`, `4`, `5`].includes(item.id));
-
-    await fs.writeFile(FILE_NAME, JSON.stringify(data, null, `  `));
+    await fs.writeFile(FILE_NAME, JSON.stringify([], null, `  `));
   } catch (error) {
     console.error(error);
   }

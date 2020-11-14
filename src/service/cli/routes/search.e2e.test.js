@@ -1,19 +1,19 @@
 'use strict';
 
 const request = require(`supertest`);
-const server = require(`./server`);
+const serverApi = require(`../server`);
 
-const {initializeOffersDatabase, clearOffersDatabase} = require(`../../utils/prepareDataForTests`);
+let server;
+// let getMockData
+
+const {initializeOffersDatabase} = require(`../../utils/prepareDataForTests`);
+
+beforeAll(async () => {
+  server = await serverApi.createServer();
+  initializeOffersDatabase();
+});
 
 describe(`Search API end-points`, () => {
-  beforeAll(() => {
-    initializeOffersDatabase();
-  });
-
-  afterAll(() => {
-    clearOffersDatabase();
-  });
-
   test(`When get offers status code should be 200`, async () => {
     const res = await request(server).get(`/search`).query({query: `TEST`});
     expect(res.statusCode).toBe(200);

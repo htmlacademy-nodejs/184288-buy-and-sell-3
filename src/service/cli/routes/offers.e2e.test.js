@@ -3,8 +3,19 @@
 const request = require(`supertest`);
 const find = require(`lodash/find`);
 
-const server = require(`./server`);
+const serverApi = require(`../server`);
 const {initializeOffersDatabase, clearOffersDatabase, mockData} = require(`../../utils/prepareDataForTests`);
+
+let server;
+
+beforeAll(async () => {
+  server = await serverApi.createServer();
+  initializeOffersDatabase();
+});
+
+afterAll(() => {
+  clearOffersDatabase();
+});
 
 const offerKeys = [`id`, `title`, `picture`, `description`, `type`, `sum`, `сategory`, `comments`];
 
@@ -100,14 +111,6 @@ const getOfferData = {
 };
 
 describe(`Offers API end-points`, () => {
-  beforeAll(() => {
-    initializeOffersDatabase();
-  });
-
-  afterAll(() => {
-    clearOffersDatabase();
-  });
-
   test(`When GET offers status code should be 200`, async () => {
     const res = await request(server).get(`/offers`);
     expect(res.statusCode).toBe(200);
