@@ -112,9 +112,6 @@ const mockData = [
 
 const initializeOffersDatabase = async () => {
   try {
-    const fileContent = await fs.readFile(FILE_NAME);
-    const preparedFileContent = JSON.parse(fileContent);
-
     await fs.writeFile(FILE_NAME, JSON.stringify(mockData, null, `  `));
   } catch (error) {
     console.error(error);
