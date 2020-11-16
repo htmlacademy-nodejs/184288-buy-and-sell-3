@@ -29,16 +29,6 @@ describe(`Categories API end-points`, () => {
     expect(res.body.length).toBe(6);
   });
 
-  test(`When get categories data length should not be less than 6`, async () => {
-    const res = await request(server).get(`/categories`);
-    expect(res.body.length).not.toBeLessThan(6);
-  });
-
-  test(`When get categories data length should not be more than 6`, async () => {
-    const res = await request(server).get(`/categories`);
-    expect(res.body.length).not.toBeGreaterThan(6);
-  });
-
   test(`When get categories data should be equal`, async () => {
     const res = await request(server).get(`/categories`);
     expect(res.body).toEqual(categoires);

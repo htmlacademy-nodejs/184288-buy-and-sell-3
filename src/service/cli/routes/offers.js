@@ -43,13 +43,14 @@ offersRoute.post(`/`, async (req, res) => {
 
   if (isValid) {
     const offers = await readMocks();
-    offers.push({...offer, id: nanoid(6)});
+    const offerWithId = {...offer, id: nanoid(6)};
+    offers.push(offerWithId);
     const preparedOffers = JSON.stringify(offers, null, `  `);
 
     try {
       await fs.writeFile(FILE_NAME, preparedOffers);
       logger.info(`End request with status code ${res.statusCode}`);
-      return res.send(offer);
+      return res.send(offerWithId);
     } catch (error) {
       logger.error(error);
       return res.status(HTTP_CODE.INTERNAL_SERVER_ERROR).send(`Something went wrong`);

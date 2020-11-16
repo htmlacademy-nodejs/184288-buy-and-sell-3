@@ -20,92 +20,92 @@ afterAll(() => {
 const offerKeys = [`id`, `title`, `picture`, `description`, `type`, `sum`, `сategory`, `comments`];
 
 const postOfferData = {
-  "title": "Куплю антиквариат.",
-  "picture": "item00.jpg",
+  "title": `Куплю антиквариат.`,
+  "picture": `item00.jpg`,
   "description": [
-    "Кажется, что это хрупкая вещь.",
-    "При покупке с меня бесплатная доставка в черте города."
+    `Кажется, что это хрупкая вещь.`,
+    `При покупке с меня бесплатная доставка в черте города.`
   ],
-  "type": "offer",
+  "type": `offer`,
   "sum": 4667,
   "сategory": [
-    "Посуда"
+    `Посуда`
   ],
   "comments": [
     {
-      "id": "BW1qOk",
-      "text": "Оплата наличными или перевод на карту?"
+      "id": `BW1qOk`,
+      "text": `Оплата наличными или перевод на карту?`
     },
     {
-      "id": "DDgAGS",
+      "id": `DDgAGS`,
       "text": {
-        "text": "tesaasd"
+        "text": `tesaasd`
       }
     },
     {
-      "id": "kAOd7a",
-      "text": "tesaasd"
+      "id": `kAOd7a`,
+      "text": `tesaasd`
     }
   ]
 };
 
 const putOfferData = {
-  "id": "1",
-  "title": "Куплю антиквариат.",
-  "picture": "item00.jpg",
+  "id": `1`,
+  "title": `Куплю антиквариат.`,
+  "picture": `item00.jpg`,
   "description": [
-    "Кажется, что это хрупкая вещь.",
-    "При покупке с меня бесплатная доставка в черте города."
+    `Кажется, что это хрупкая вещь.`,
+    `При покупке с меня бесплатная доставка в черте города.`
   ],
-  "type": "offer",
+  "type": `offer`,
   "sum": 4667,
   "сategory": [
-    "Посуда"
+    `Посуда`
   ],
   "comments": [
     {
-      "id": "BW1qOk",
-      "text": "Оплата наличными или перевод на карту?"
+      "id": `BW1qOk`,
+      "text": `Оплата наличными или перевод на карту?`
     },
     {
-      "id": "DDgAGS",
+      "id": `DDgAGS`,
       "text": {
-        "text": "tesaasd"
+        "text": `tesaasd`
       }
     },
     {
-      "id": "kAOd7a",
-      "text": "tesaasd"
+      "id": `kAOd7a`,
+      "text": `tesaasd`
     }
   ]
 };
 
 const getOfferData = {
-  "id": "2",
-  "title": "Продам Куплю новую приставку Sony Playstation 5.",
-  "picture": "item14.jpg",
+  "id": `2`,
+  "title": `Продам Куплю новую приставку Sony Playstation 5.`,
+  "picture": `item14.jpg`,
   "description": [
-    "Товар в отличном состоянии.",
-    "Это настоящая находка для коллекционера!"
+    `Товар в отличном состоянии.`,
+    `Это настоящая находка для коллекционера!`
   ],
-  "type": "offer",
+  "type": `offer`,
   "sum": 69196,
   "сategory": [
-    "Журналы",
-    "Разное"
+    `Журналы`,
+    `Разное`
   ],
   "comments": [
     {
-      "id": "UFDHfT",
-      "text": "А сколько игр в комплекте?"
+      "id": `UFDHfT`,
+      "text": `А сколько игр в комплекте?`
     },
     {
-      "id": "tMJGgq",
-      "text": "С чем связана продажа? Почему так дешёво?"
+      "id": `tMJGgq`,
+      "text": `С чем связана продажа? Почему так дешёво?`
     },
     {
-      "id": "LRFSlR",
-      "text": "Неплохо, но дорого"
+      "id": `LRFSlR`,
+      "text": `Неплохо, но дорого`
     }
   ]
 };
@@ -119,16 +119,17 @@ describe(`Offers API end-points`, () => {
   test(`When GET offer by ID data should be contain following keys`, async () => {
     const res = await request(server).get(`/offers/1`);
     expect(res.statusCode).toBe(200);
-    offerKeys.forEach(key => expect(res.body).toHaveProperty(key));
+    offerKeys.forEach((key) => expect(res.body).toHaveProperty(key));
     expect(res.body).toEqual(mockData[0]);
   });
 
   test(`When POST offer request was Success. Offers amount stould be +1`, async () => {
     const res = await request(server).get(`/offers`);
     const initAmount = res.body.length;
-    await request(server).post(`/offers`).send(postOfferData);
+    const createdOffer = await request(server).post(`/offers`).send(postOfferData);
     const newRes = await request(server).get(`/offers`);
     const newAmount = newRes.body.length;
+    expect(createdOffer.body.title).toBe(postOfferData.title);
     expect(newAmount).toBe(initAmount + 1);
   });
 
@@ -139,13 +140,13 @@ describe(`Offers API end-points`, () => {
     expect(getRes.body).toEqual(putOfferData);
   });
 
-  test(`GET. Chech get offer by ID`, async () => {
+  test(`GET. Check get offer by ID`, async () => {
     const res = await request(server).get(`/offers/2`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(getOfferData);
   });
 
-  test(`DELETE. Chech that offer was removed`, async () => {
+  test(`DELETE. Check that offer was removed`, async () => {
     const deleteRes = await request(server).delete(`/offers/3`);
     expect(deleteRes.statusCode).toBe(200);
     const getRes = await request(server).get(`/offers/3`);
@@ -183,7 +184,7 @@ describe(`Offers API end-points`, () => {
     expect(postRes.statusCode).toBe(200);
     const res = await request(server).get(`/offers/5/comments`);
     expect(res.statusCode).toBe(200);
-    const {text} = res.body.filter(item => item.text === `Test comment`)[0];
+    const {text} = res.body.filter((item) => item.text === `Test comment`)[0];
     expect(text).toEqual(`Test comment`);
   });
 });
