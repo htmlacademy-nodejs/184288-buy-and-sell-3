@@ -5,10 +5,13 @@
   "main": "./src/service/service.js",
   "scripts": {
     "test": "npm run eslint",
+    "test::rest": "jest",
     "eslint": "eslint --ext .js src/",
-    "start": "node ./src/service/service.js --generate 5",
+    "start": "LOG_LEVEL=error node ./src/service/cli/server.js | ./node_modules/.bin/pino-pretty",
+    "start::debug": "LOG_LEVEL=debug node ./src/service/cli/server.js | ./node_modules/.bin/pino-pretty",
     "server": "nodemon ./src/service/service.js --server 3000",
-    "express": "nodemon ./src/express"
+    "express": "nodemon ./src/express",
+    "serve": "node ./src/service/cli/routes/server.js > ./src/service/logs/app.log"
   },
   "repository": {
     "type": "git",
@@ -21,15 +24,22 @@
   },
   "homepage": "https://github.com/GlebHihoho/184288-buy-and-sell-3#readme",
   "devDependencies": {
+    "debug": "4.1.1",
     "eslint": "6.8.0",
     "eslint-config-htmlacademy": "0.5.2",
-    "nodemon": "2.0.2"
+    "jest": "25.2.3",
+    "nodemon": "2.0.2",
+    "pino-pretty": "4.0.0",
+    "supertest": "4.0.2"
   },
   "dependencies": {
     "body-parser": "1.19.0",
     "chalk": "3.0.0",
+    "cross-env": "7.0.2",
     "express": "4.17.1",
+    "express-pino-logger": "4.0.0",
     "nanoid": "2.1.11",
+    "pino": "6.1.1",
     "pug": "2.0.4"
   }
 }

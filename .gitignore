@@ -9,8 +9,12 @@ Thumbs.db
 
 # Вспомогательные файлы
 *.log*
+coverage
 node_modules/
 mocks.json
 
 # Папка с собранными файлами проекта
 build/
+
+# Logs
+src/service/logs
