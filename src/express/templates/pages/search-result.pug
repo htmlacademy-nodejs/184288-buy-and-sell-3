@@ -5,7 +5,10 @@ block content
     .search-results__wrapper
       p.search-results__label
         | Найдено
-        span.js-results  2 публикации
+        |
+        span.js-results= tickets.length
+          |
+          | публикации
       ul.search-results__list
         each ticket, index in tickets
           include ../common/ticket.pug
@@ -16,5 +19,5 @@ block content
         p.tickets-list__title Самое свежее
         a.tickets-list__link(href='#') Еще 25
       ul
-        each ticket, index in tickets
+        each ticket, index in newTickets
           include ../common/ticket.pug

@@ -11,6 +11,7 @@ Thumbs.db
 *.log*
 coverage
 node_modules/
+upload/
 mocks.json
 
 # Папка с собранными файлами проекта

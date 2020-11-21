@@ -16,7 +16,7 @@ const offersRoute = new Router();
 
 const FILE_NAME = `mocks.json`;
 
-const offerFields = [`title`, `picture`, `description`, `type`, `sum`, `сategory`, `comments`];
+const offerFields = [`title`, `picture`, `description`, `type`, `sum`, `category`];
 
 const readMocks = async () => {
   try {
@@ -40,7 +40,7 @@ offersRoute.post(`/`, async (req, res) => {
   const offer = req.body;
   const offerKeys = Object.keys(offer);
   const isValid = offerFields.every((field) => offerKeys.includes(field));
-
+  console.log(`offer`, offer);
   if (isValid) {
     const offers = await readMocks();
     const offerWithId = {...offer, id: nanoid(6)};

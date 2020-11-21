@@ -1,13 +1,12 @@
 section.categories-list
   h1.visually-hidden Сервис объявлений "Куплю - продам"
   ul.categories-list__wrapper
+    // TODO: fix block when category will have id and count
     each category in categories
       li.categories-list__item
         a.category-tile.category-tile--default(href='/offers')
           span.category-tile__image
             img(src=category.src, srcset=category.srcset, alt='Иконка категории')
           span.category-tile__label
-            =category.label + ' '
+            =category + ' '
             span.category-tile__qty.js-qty= category.count
-
-

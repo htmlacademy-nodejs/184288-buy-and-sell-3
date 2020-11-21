@@ -10,7 +10,7 @@ const searchRoute = require(`./routes/search`);
 
 const {getLogger} = require(`./logger`);
 const logger = getLogger();
-const pino = require('express-pino-logger')({logger});
+const pino = require(`express-pino-logger`)({logger});
 
 const DEFAULT_PORT = 3000;
 
@@ -23,9 +23,9 @@ const createServer = async () => {
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({extended: false}));
 
-  server.use(`/offers`, offersRoute);
-  server.use(`/categories`, categoriesRoute);
-  server.use(`/search`, searchRoute);
+  server.use(`/api/offers`, offersRoute);
+  server.use(`/api/categories`, categoriesRoute);
+  server.use(`/api/search`, searchRoute);
   server.use((_req, res) => res.status(404).send({ok: false}));
 
   server.use((req, res, next) => {

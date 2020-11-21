@@ -2,16 +2,19 @@
 
 const {Router} = require(`express`);
 
-const {categories, tickets, popularTickers} = require(`../data/mock`);
+const {categoiresService, offersService} = require(`../api`);
 
 const homeRoute = new Router();
 
-homeRoute.get(`/`, (req, res) => {
+homeRoute.get(`/`, async (_req, res) => {
+  const categories = await categoiresService.getCategories();
+  const offers = await offersService.getOffers();
+
   const pageContent = {
     title: `Главная страница`,
     categories,
-    newTickets: tickets,
-    popularTickers,
+    newTickets: offers,
+    popularTickers: offers,
   };
 
   res.render(`pages/main`, pageContent);
