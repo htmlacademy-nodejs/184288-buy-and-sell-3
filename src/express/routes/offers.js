@@ -2,25 +2,25 @@
 
 const {Router} = require(`express`);
 
-const {categories, tickets, comments} = require(`../data/mock`);
-const {categoiresService, offersService} = require(`../api`);
+const {comments} = require(`../data/mock`);
+const {getAPI} = require(`../api`);
 const upload = require(`../utils/upload`);
 
 const offersRoute = new Router();
 
+const API = getAPI();
+
 const pageContent = {
   title: `Главная страница`,
-  categories,
-  tickets,
   comments,
 };
 
 offersRoute.get(`/`, async (_req, res) => {
-  const category = await categoiresService.getCategories();
-  const offers = await offersService.getOffers();
+  const [categories, offers] = await Promise.all([API.getCategories(), API.getOffers()]);
+
   const content = {
     ...pageContent,
-    categories: category,
+    categories,
     tickets: offers,
   };
 
@@ -28,7 +28,7 @@ offersRoute.get(`/`, async (_req, res) => {
 });
 
 offersRoute.get(`/add`, async (_req, res) => {
-  const category = await categoiresService.getCategories();
+  const category = await API.getCategories();
 
   return res.render(`pages/new-ticket`, {...pageContent, category});
 });
@@ -46,7 +46,7 @@ offersRoute.post(`/add`, upload.single(`avatar`), async (req, res) => {
   };
 
   try {
-    await offersService.createOffer(offerData);
+    await API.createOffer(offerData);
     res.redirect(`/my`);
   } catch (e) {
     res.redirect(`back`);
@@ -61,8 +61,8 @@ offersRoute.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
 
   const [offer, category] = await Promise.all([
-    offersService.getOfferById(id),
-    categoiresService.getCategories(),
+    API.getOfferById(id),
+    API.getCategories(),
   ]);
 
   return res.render(`pages/ticket-edit`, {...pageContent, offer, category});

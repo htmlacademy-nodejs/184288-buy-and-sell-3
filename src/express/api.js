@@ -3,32 +3,79 @@
 const axios = require(`axios`);
 
 const port = process.env.API_PORT || 3000;
-const baseUrl = `http://localhost:${port}/api/`;
+const TIMEOUT = 1000;
+const defaultUrl = `http://localhost:${port}/api/`;
 
-const categoiresService = {
-  getCategories: () => axios.get(`${baseUrl}categories`).then((res) => res.data),
-};
+class API {
+  constructor(baseURL, timeout) {
+    this._http = axios.create({
+      baseURL,
+      timeout
+    });
+  }
 
-const searchService = {
-  searchOffers: (query) => axios.get(`${baseUrl}search`, {params: query}).then((res) => res.data),
-};
+  async _load(url, options) {
+    const response = await this._http.request({url, ...options});
+    return response.data;
+  }
 
-const offersService = {
-  getOffers: () => axios.get(`${baseUrl}offers`).then((res) => res.data),
-  getOfferById: (id) => axios.get(`${baseUrl}offers/${id}`).then((res) => res.data),
-  getOfferComments: (id) => axios.get(`${baseUrl}offers/${id}/comments`).then((res) => res.data),
+  getOffers() {
+    return this._load(`/offers`);
+  }
 
-  createOffer: (offer) => axios.post(`${baseUrl}offers`, offer),
-  createOfferComment: (id, data) => axios.post(`${baseUrl}offers/${id}/comments`, data),
+  getOfferById(id) {
+    return this._load(`/offers/${id}`);
+  }
 
-  updateOffer: (id, data) => axios.put(`${baseUrl}offers/${id}`, data),
+  search(query) {
+    return this._load(`/search`, {params: {query}});
+  }
 
-  deleteOffer: (id) => axios.delete(`${baseUrl}offers/${id}`),
-  deleteOfferComment: (offerId, commentId) => axios.delete(`${baseUrl}offers/${offerId}/comments/${commentId}`),
-};
+  async getCategories() {
+    return this._load(`/categories`);
+  }
+
+  async createOffer(data) {
+    return this._load(`/offers`, {
+      method: `POST`,
+      data
+    });
+  }
+
+  async createOfferComment(id, data) {
+    return this._load(`/offers/${id}/comment`, {
+      method: `POST`,
+      data
+    });
+  }
+
+  async updateOffer(id, data) {
+    return this._load(`/offers/${id}`, {
+      method: `PUT`,
+      data
+    });
+  }
+
+  async deleteOffer(id) {
+    return this._load(`/offers/${id}`, {
+      method: `DELETE`
+    });
+  }
+
+  async deleteOfferComment(offerId, commentId) {
+    return this._load(`/offers/${offerId}/comments/${commentId}`, {
+      method: `DELETE`
+    });
+  }
+
+  async searchOffers(query) {
+    return this._load(`/search`, {params: {query}});
+  }
+}
+
+const defaultAPI = new API(defaultUrl, TIMEOUT);
 
 module.exports = {
-  categoiresService,
-  searchService,
-  offersService,
+  API,
+  getAPI: () => defaultAPI
 };

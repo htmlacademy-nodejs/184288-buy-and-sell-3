@@ -1,14 +1,16 @@
 'use strict';
 
 const {Router} = require(`express`);
-const {searchService, offersService} = require(`../api`);
+
+const {getAPI} = require(`../api`);
+
+const API = getAPI();
 
 const searchRoute = new Router();
 
 searchRoute.get(`/`, async (req, res) => {
   const {query} = req;
-  const searchData = await searchService.searchOffers(query);
-  const newTickets = await offersService.getOffers();
+  const [searchData, newTickets] = await Promise.all([API.searchOffers(query), API.getOffers()]);
 
   const pageContent = {
     title: `Главная страница`,

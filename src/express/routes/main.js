@@ -1,14 +1,14 @@
 'use strict';
 
 const {Router} = require(`express`);
+const {getAPI} = require(`../api`);
 
-const {categoiresService, offersService} = require(`../api`);
+const API = getAPI();
 
 const homeRoute = new Router();
 
 homeRoute.get(`/`, async (_req, res) => {
-  const categories = await categoiresService.getCategories();
-  const offers = await offersService.getOffers();
+  const [categories, offers] = await Promise.all([API.getCategories(), API.getOffers()]);
 
   const pageContent = {
     title: `Главная страница`,

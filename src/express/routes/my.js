@@ -2,14 +2,16 @@
 
 const {Router} = require(`express`);
 const {take} = require(`lodash`);
+const {getAPI} = require(`../api`);
 
-const {tickets, comments} = require(`../data/mock`);
-const {offersService} = require(`../api`);
+const API = getAPI();
+
+const {comments} = require(`../data/mock`);
 
 const myRoute = new Router();
 
 myRoute.get(`/`, async (_req, res) => {
-  const offers = await offersService.getOffers();
+  const offers = await API.getOffers();
   const pageContent = {
     title: `Куплю продам`,
     tickets: offers,
@@ -20,7 +22,7 @@ myRoute.get(`/`, async (_req, res) => {
 });
 
 myRoute.get(`/comments`, async (_req, res) => {
-  const offers = await offersService.getOffers();
+  const offers = await API.getOffers();
   const preparedOffers = take(offers, 3);
   const pageContent = {
     title: `Куплю продам`,
