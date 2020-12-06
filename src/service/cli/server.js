@@ -4,13 +4,15 @@ const express = require(`express`);
 const chalk = require(`chalk`);
 const bodyParser = require(`body-parser`);
 
+const {BACKEND_BASE_URL} = require(`../../constants`);
+
 const offersRoute = require(`./routes/offers`);
 const categoriesRoute = require(`./routes/categories`);
 const searchRoute = require(`./routes/search`);
 
 const {getLogger} = require(`./logger`);
 const logger = getLogger();
-const pino = require('express-pino-logger')({logger});
+const pino = require(`express-pino-logger`)({logger});
 
 const DEFAULT_PORT = 3000;
 
@@ -23,9 +25,9 @@ const createServer = async () => {
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({extended: false}));
 
-  server.use(`/offers`, offersRoute);
-  server.use(`/categories`, categoriesRoute);
-  server.use(`/search`, searchRoute);
+  server.use(`${BACKEND_BASE_URL}offers`, offersRoute);
+  server.use(`${BACKEND_BASE_URL}categories`, categoriesRoute);
+  server.use(`${BACKEND_BASE_URL}search`, searchRoute);
   server.use((_req, res) => res.status(404).send({ok: false}));
 
   server.use((req, res, next) => {

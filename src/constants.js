@@ -4,6 +4,8 @@ module.exports.DEFAULT_COMMAND = `--help`;
 
 module.exports.USER_ARGV_INDEX = 2;
 
+module.exports.BACKEND_BASE_URL = `/api/`;
+
 module.exports.EXIT_CODE = {
   ERROR: 1,
   SUCCESS: 0,

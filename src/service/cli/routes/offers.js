@@ -16,7 +16,7 @@ const offersRoute = new Router();
 
 const FILE_NAME = `mocks.json`;
 
-const offerFields = [`title`, `picture`, `description`, `type`, `sum`, `сategory`, `comments`];
+const offerFields = [`title`, `picture`, `description`, `type`, `sum`, `category`];
 
 const readMocks = async () => {
   try {

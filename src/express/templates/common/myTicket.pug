@@ -4,14 +4,15 @@ li.tickets-list__item.js-card
       .ticket-card__img
         img(src=ticket.src, srcset=ticket.srcset, alt='Изображение товара')
       .ticket-card__info
-        span.ticket-card__label= ticket.label
+        span.ticket-card__label= ticket.type
         .ticket-card__categories
-          each category in ticket.categories
-            a(href='#')= category
+          if ticket.category
+            each val in ticket.category
+              a(href='#')= val
         .ticket-card__header
           h3.ticket-card__title
-            a(href='offers/'  + index)= ticket.title
+            a(href='offers/'  + ticket.id)= ticket.title
           p.ticket-card__price
-            span.js-sum= ticket.price
+            span.js-sum= ticket.sum
             |  ₽
       button.ticket-card__del.js-delete(type='button') Удалить

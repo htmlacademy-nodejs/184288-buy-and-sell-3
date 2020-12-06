@@ -79,7 +79,7 @@ const getAdverts = (count, titles, sentences, categories, comments) => (
     const description = getDescription(sentences);
     const type = getRandomElement(TYPES);
     const sum = random(MIN_SUM, MAX_SUM);
-    const сategory = getCategories(categories);
+    const category = getCategories(categories);
     const preparedComments = getComments(comments);
 
     return {
@@ -89,7 +89,7 @@ const getAdverts = (count, titles, sentences, categories, comments) => (
       description,
       type,
       sum,
-      сategory,
+      category,
       comments: preparedComments,
     };
   })

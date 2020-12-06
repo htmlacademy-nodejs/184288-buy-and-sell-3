@@ -24,14 +24,13 @@ const readMocks = async () => {
 
 searchRoute.get(`/`, async (req, res) => {
   const offers = await readMocks();
-  const {query} = req.query;
-
-  if (!query) {
+  const {search} = req.query;
+  if (!search) {
     logger.error(`End request with status code ${HTTP_CODE.NOT_FOUND}`);
     return res.status(HTTP_CODE.NOT_FOUND).send(`Something went wrong`);
   }
-
-  const response = offers.filter((offer) => offer.title.indexOf(query) !== -1);
+  const response = offers.filter((offer) => offer.title.indexOf(search) !== -1);
+  console.log(`response`, response);
   logger.info(`End request with status code ${res.statusCode}`);
   return res.send(response);
 });
