@@ -2,9 +2,11 @@
 
 const axios = require(`axios`);
 
+const {BACKEND_BASE_URL} = require(`../constants`);
+
 const port = process.env.API_PORT || 3000;
 const TIMEOUT = 1000;
-const defaultUrl = `http://localhost:${port}/api/`;
+const defaultUrl = `http://localhost:${port}${BACKEND_BASE_URL}`;
 
 class API {
   constructor(baseURL, timeout) {

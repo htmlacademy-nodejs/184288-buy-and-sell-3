@@ -4,6 +4,8 @@ const express = require(`express`);
 const chalk = require(`chalk`);
 const bodyParser = require(`body-parser`);
 
+const {BACKEND_BASE_URL} = require(`../../constants`);
+
 const offersRoute = require(`./routes/offers`);
 const categoriesRoute = require(`./routes/categories`);
 const searchRoute = require(`./routes/search`);
@@ -23,9 +25,9 @@ const createServer = async () => {
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({extended: false}));
 
-  server.use(`/api/offers`, offersRoute);
-  server.use(`/api/categories`, categoriesRoute);
-  server.use(`/api/search`, searchRoute);
+  server.use(`${BACKEND_BASE_URL}offers`, offersRoute);
+  server.use(`${BACKEND_BASE_URL}categories`, categoriesRoute);
+  server.use(`${BACKEND_BASE_URL}search`, searchRoute);
   server.use((_req, res) => res.status(404).send({ok: false}));
 
   server.use((req, res, next) => {
